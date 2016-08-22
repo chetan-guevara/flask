@@ -4,8 +4,9 @@ from bokeh.embed import components
 from urllib2 import urlopen
 import pandas as pd 
 import numpy as np
-import ijson
-	
+#import ijson
+import json, contextlib
+ 
 
 app = Flask(__name__)
 app_vars = {}
@@ -20,34 +21,20 @@ def index():
 		return render_template('index.html')
 	else:
 		#request was a POST
-		app_vars['ticker'] = request.form['ticker']
+		app_vars['ticker'] = request.form['ticker'].lower()
 		#Take care of the case where the ticker symbol is invalid
 		
 		api_url = 'https://www.quandl.com/api/v1/datasets/WIKI/%s.json' % app_vars['ticker']
 
-		#f = urlopen(api_url)
-		#tmp = ijson.items(f, 'error')
-		#if tmp 
-		#{"error":"Requested entity does not exist."}
-
-		objects = ijson.items(f, 'column_names')
-		tmp = list(objects)[0]
-		columns = []
-		for val in tmp:
-		    columns.append(val)
-
 		f = urlopen(api_url)
-		objects = ijson.items(f, 'data')
-		tmp = list(objects)[0]
-		data = []
-		for val in tmp:
-		    data.append(val)
+		jdata = json.load(f)
 
-		data = pd.DataFrame(data, columns=columns)
+		columns = jdata['column_names']
+		raw_data = jdata['data']
 
+		data = pd.DataFrame(raw_data, columns=columns)
 		#p = figure()
-		#p.line([1, 2, 3, 4, 5], [6, 7, 2, 4, 5], line_width=2)
-
+		#p.line([1, 2, 3, 4, 5], [6, 7, 2, 4, 5], line_width=2
 		p = figure()
 		b = map(float,list(data['Close']))
 		a = range(len(b))
@@ -66,9 +53,9 @@ if __name__ == '__main__':
 
 #from bokeh.embed import components 
 #f = open('Test.txt', 'w')
-		#f.write('Name of Stock: %s'%app_vars['ticker'])
-		#f.close()
-
+#f.write('Name of Stock: %s'%app_vars['ticker'])
+#f.close()
+#api_url = 'https://www.quandl.com/api/v1/datasets/WIKI/%s.json' % st
 
 
 
