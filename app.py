@@ -5,7 +5,7 @@ from urllib2 import urlopen
 import pandas as pd 
 import numpy as np
 #import ijson
-import json, contextlib
+import json
  
 
 app = Flask(__name__)
