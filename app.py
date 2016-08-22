@@ -25,7 +25,11 @@ def index():
 		
 		api_url = 'https://www.quandl.com/api/v1/datasets/WIKI/%s.json' % app_vars['ticker']
 
-		f = urlopen(api_url)
+		#f = urlopen(api_url)
+		#tmp = ijson.items(f, 'error')
+		#if tmp 
+		#{"error":"Requested entity does not exist."}
+
 		objects = ijson.items(f, 'column_names')
 		tmp = list(objects)[0]
 		columns = []
@@ -45,7 +49,9 @@ def index():
 		#p.line([1, 2, 3, 4, 5], [6, 7, 2, 4, 5], line_width=2)
 
 		p = figure()
-		p = p.line(data['Close'])
+		b = map(float,list(data['Close']))
+		a = range(len(b))
+		p.line(a,b,line_width=2)
 
 		script, div = components(p)
 		#print script
