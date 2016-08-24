@@ -26,9 +26,12 @@ def index():
 		
 		api_url = 'https://www.quandl.com/api/v1/datasets/WIKI/%s.json' % app_vars['ticker']
 
-		f = urlopen(api_url)
+		try:
+			f = urlopen(api_url)
+		except:
+			return render_template('error.html', ticker=app_vars['ticker'])
+		
 		jdata = json.load(f)
-
 		columns = jdata['column_names']
 		raw_data = jdata['data']
 
