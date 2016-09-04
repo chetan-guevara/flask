@@ -39,7 +39,7 @@ def index():
 		#p = figure()
 		#p.line([1, 2, 3, 4, 5], [6, 7, 2, 4, 5], line_width=2
 		p = figure()
-		b = map(float,list(data['Close']))
+		b = map(float,list(data['Close'][:31]))
 		a = range(len(b))
 		p.line(a,b,line_width=2)
 
